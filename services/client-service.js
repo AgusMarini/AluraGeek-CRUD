@@ -1,36 +1,36 @@
-//Conexion
-const listaProductos = () => fetch('http://localhost:3000/productos').then(respuesta => respuesta.json());
-
+// Conexion
+const listaProductos = () => fetch(`${BASE_URL}/db.json`).then(respuesta => respuesta.json());
 
 const crearProducto = (nombre, precio, imagen, categoria, descripcion) => {
-  return fetch('http://localhost:3000/productos', {
+  return fetch(`${BASE_URL}/productos`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({nombre, precio, imagen,  id:uuid.v4(), categoria, descripcion})
+    body: JSON.stringify({ nombre, precio, imagen, id: uuid.v4(), categoria, descripcion }),
   });
 };
 
 const eliminarProducto = (id) => {
-  return fetch(`http://localhost:3000/productos/${id}`, {
-    method: "DELETE"
+  return fetch(`${BASE_URL}/productos/${id}`, {
+    method: "DELETE",
   });
 };
 
-//Detalles del producto por ID
 const detalleProducto = async (id) => {
-  return fetch(`https://zealous-loincloth-bass.cyclic.app/productos/${id}`).then( respuesta => respuesta.json());
+  return fetch(`${BASE_URL}/productos/${id}`).then((respuesta) => respuesta.json());
 };
 
 const actualizarProducto = (nombre, precio, imagen, id, categoria, descripcion) => {
-  return fetch(`https://zealous-loincloth-bass.cyclic.app/productos/${id}`,{
+  return fetch(`${BASE_URL}/productos/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({nombre, precio, imagen, categoria, descripcion})
-  }).then(respuesta => respuesta).catch(error => console.log(error));
+    body: JSON.stringify({ nombre, precio, imagen, categoria, descripcion }),
+  })
+    .then((respuesta) => respuesta)
+    .catch((error) => console.log(error));
 };
 
 export const clientServices = {
@@ -38,8 +38,5 @@ export const clientServices = {
   detalleProducto,
   crearProducto,
   actualizarProducto,
-  eliminarProducto
+  eliminarProducto,
 };
-
-
-
