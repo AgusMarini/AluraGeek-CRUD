@@ -1,42 +1,33 @@
-// Conexion
-const listaProductos = () => fetch(`${BASE_URL}/db.json`).then(respuesta => respuesta.json());
+const BASE_URL = "https://agusmarini.github.io/AluraGeek-CRUD/db.json";
 
-const crearProducto = (nombre, precio, imagen, categoria, descripcion) => {
-  return fetch(`${BASE_URL}/productos`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ nombre, precio, imagen, id: uuid.v4(), categoria, descripcion }),
-  });
+// Obtener la lista de productos
+const listaProductos = async () => {
+  const response = await fetch(BASE_URL);
+  const data = await response.json();
+  return data.productos; // Asegúrate de que "productos" es una clave en tu `db.json`
 };
 
-const eliminarProducto = (id) => {
-  return fetch(`${BASE_URL}/productos/${id}`, {
-    method: "DELETE",
-  });
-};
-
+// Obtener el detalle de un producto por ID
 const detalleProducto = async (id) => {
-  return fetch(`${BASE_URL}/productos/${id}`).then((respuesta) => respuesta.json());
+  const productos = await listaProductos();
+  return productos.find((producto) => producto.id === id); // Filtrar por ID
 };
 
-const actualizarProducto = (nombre, precio, imagen, id, categoria, descripcion) => {
-  return fetch(`${BASE_URL}/productos/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ nombre, precio, imagen, categoria, descripcion }),
-  })
-    .then((respuesta) => respuesta)
-    .catch((error) => console.log(error));
+// Las siguientes funciones no funcionarán en GitHub Pages
+const crearProducto = () => {
+  throw new Error("La operación 'crearProducto' no es compatible en GitHub Pages.");
 };
 
+const eliminarProducto = () => {
+  throw new Error("La operación 'eliminarProducto' no es compatible en GitHub Pages.");
+};
+
+const actualizarProducto = () => {
+  throw new Error("La operación 'actualizarProducto' no es compatible en GitHub Pages.");
+};
+
+// Exporta solo las funciones disponibles
 export const clientServices = {
   listaProductos,
   detalleProducto,
-  crearProducto,
-  actualizarProducto,
-  eliminarProducto,
 };
