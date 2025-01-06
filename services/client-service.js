@@ -1,8 +1,9 @@
 //Conexion
-const listaProductos = () => fetch('https://zealous-loincloth-bass.cyclic.app/productos').then(respuesta => respuesta.json());
+const listaProductos = () => fetch('http://localhost:3000/productos').then(respuesta => respuesta.json());
+
 
 const crearProducto = (nombre, precio, imagen, categoria, descripcion) => {
-  return fetch('https://zealous-loincloth-bass.cyclic.app/productos', {
+  return fetch('http://localhost:3000/productos', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -12,7 +13,7 @@ const crearProducto = (nombre, precio, imagen, categoria, descripcion) => {
 };
 
 const eliminarProducto = (id) => {
-  return fetch(`https://zealous-loincloth-bass.cyclic.app/productos/${id}`, {
+  return fetch(`http://localhost:3000/productos/${id}`, {
     method: "DELETE"
   });
 };

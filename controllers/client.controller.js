@@ -1,29 +1,37 @@
 import { clientServices } from "../services/client-service.js";
 import { MostrarProductos } from "./mostrar.productos.controller.js";
 
-//Capturando la seccion de productos star wars
+// Capturando las secciones para cada categoría
 const productosStarWars = document.querySelector("[data-star-wars]");
-//Capturando la seccion de consolas
 const productosConsolas = document.querySelector("[data-consolas]");
-//Capturando la seccion de consolas
 const productosDiversos = document.querySelector("[data-diversos]");
 
-//Recorrer los datos traidos del JSON
-clientServices.listaProductos().then(data => {
-  data.forEach(({nombre, precio, descripcion, imagen, id, categoria}) => {
-    //Imprimir datos en el index
-    if(categoria === "Star wars"){
-      const nuevoProducto = MostrarProductos(nombre, precio, descripcion, imagen, id, categoria);
-      productosStarWars.appendChild(nuevoProducto);
-    }else if(categoria === "Consolas"){
-      const nuevoProducto = MostrarProductos(nombre, precio, descripcion, imagen, id, categoria);
-      productosConsolas.appendChild(nuevoProducto);
-    }else if(categoria === "Diversos"){
-      const nuevoProducto = MostrarProductos(nombre, precio, descripcion, imagen, id, categoria);
-      productosDiversos.appendChild(nuevoProducto);
+// Función para mostrar productos
+clientServices.listaProductos()
+  .then(data => {
+    // Verificar si los datos están disponibles
+    if (!data || !Array.isArray(data)) {
+      console.error("Los datos obtenidos no son válidos o están vacíos.");
+      return;
     }
+
+    // Recorrer los productos y mostrarlos según la categoría
+    data.forEach(({ nombre, precio, descripcion, imagen, id, categoria }) => {
+      const nuevoProducto = MostrarProductos(nombre, precio, descripcion, imagen, id, categoria);
+
+      // Determinar a qué sección pertenece el producto
+      if (categoria === "Star wars") {
+        productosStarWars.appendChild(nuevoProducto);
+      } else if (categoria === "Consolas") {
+        productosConsolas.appendChild(nuevoProducto);
+      } else if (categoria === "Diversos") {
+        productosDiversos.appendChild(nuevoProducto);
+      } else {
+        console.warn(`Categoría desconocida: ${categoria}`);
+      }
+    });
+  })
+  .catch(error => {
+    console.error("Error al cargar los productos:", error);
+    alert("Hubo un error al cargar los productos. Por favor, intenta de nuevo más tarde.");
   });
-})
-
-
-

@@ -1,10 +1,17 @@
 const jsonServer = require('json-server');
+const path = require('path');
 const server = jsonServer.create();
-const router = jsonServer.router('db.json');
+const router = jsonServer.router('backend/db.json');
 const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 3000;
 
-server.use(middlewares);
+// Middleware para servir archivos estáticos
+server.use(jsonServer.defaults({
+  static: path.join(__dirname, './') // Ruta de tu proyecto
+}));
+
 server.use(router);
 
-server.listen(port);
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`JSON Server está corriendo en http://localhost:${port}`);
+});
